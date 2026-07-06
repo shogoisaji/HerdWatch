@@ -147,7 +147,7 @@ Regenerate the Xcode project with XcodeGen before building (`.xcodeproj` is gene
 
 ```bash
 # Regenerate project (required when files are added)
-xcodegen generate -s HerdWatch.yml
+xcodegen generate
 
 # Build
 xcodebuild build -project HerdWatch.xcodeproj -scheme HerdWatch -destination 'platform=macOS'

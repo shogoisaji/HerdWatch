@@ -1,5 +1,5 @@
 # XcodeGen プロジェクト定義: macOSアプリ（正本）
-# ファイルを追加したら `xcodegen generate -s HerdWatch.yml` を再実行してプロジェクトを更新する。
+# ファイルを追加したら `xcodegen generate` を再実行してプロジェクトを更新する。
 name: HerdWatch
 
 options:

@@ -17,7 +17,7 @@ Mac App Store は非サンドボックス（unix ソケット・NSWorkspace・he
 
 ### 1. バージョンを上げる
 
-`HerdWatch.yml` の `MARKETING_VERSION`（と必要なら `CURRENT_PROJECT_VERSION`）を更新。
+`project.yml` の `MARKETING_VERSION`（と必要なら `CURRENT_PROJECT_VERSION`）を更新。
 
 ```yaml
 settings:
@@ -82,7 +82,7 @@ gh release create v0.2.0 --generate-notes --title "0.2.0"
 
 #### Sparkle Ed25519 鍵
 
-鍵ペアは既に生成済み（公開鍵は `HerdWatch.yml` の `SUPublicEDKey` に埋込済み）。
+鍵ペアは既に生成済み（公開鍵は `project.yml` の `SUPublicEDKey` に埋込済み）。
 秘密鍵を CI secret に登録する:
 
 ```bash
@@ -92,7 +92,7 @@ cat /tmp/ed25519_priv.pem
 # 出力内容を SPARKLE_PRIVATE_KEY_PEM に貼り付け
 ```
 
-> 公開鍵: `HerdWatch.yml` の `SUPublicEDKey`（`info:` → Info.plist に生成）
+> 公開鍵: `project.yml` の `SUPublicEDKey`（`info:` → Info.plist に生成）
 > 秘密鍵は絶対にコミットしない（`.gitignore` で `*.pem` 等を除外済み）。
 
 #### Homebrew tap 用 PAT
