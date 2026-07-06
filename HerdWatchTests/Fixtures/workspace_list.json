@@ -1,0 +1,68 @@
+{
+  "id": "probe_workspace.list",
+  "result": {
+    "type": "workspace_list",
+    "workspaces": [
+      {
+        "workspace_id": "w9",
+        "number": 1,
+        "label": "uchiken",
+        "focused": true,
+        "pane_count": 2,
+        "tab_count": 1,
+        "active_tab_id": "w9:t1",
+        "agent_status": "idle"
+      },
+      {
+        "workspace_id": "wB",
+        "number": 2,
+        "label": "PoC",
+        "focused": false,
+        "pane_count": 2,
+        "tab_count": 1,
+        "active_tab_id": "wB:t1",
+        "agent_status": "idle"
+      },
+      {
+        "workspace_id": "wE",
+        "number": 3,
+        "label": "skill-store",
+        "focused": false,
+        "pane_count": 4,
+        "tab_count": 1,
+        "active_tab_id": "wE:t1",
+        "agent_status": "working"
+      },
+      {
+        "workspace_id": "wF",
+        "number": 4,
+        "label": "crc-support",
+        "focused": false,
+        "pane_count": 2,
+        "tab_count": 1,
+        "active_tab_id": "wF:t1",
+        "agent_status": "idle"
+      },
+      {
+        "workspace_id": "wC",
+        "number": 5,
+        "label": "caf",
+        "focused": false,
+        "pane_count": 3,
+        "tab_count": 1,
+        "active_tab_id": "wC:t1",
+        "agent_status": "unknown"
+      },
+      {
+        "workspace_id": "wG",
+        "number": 6,
+        "label": "pev-management-system",
+        "focused": false,
+        "pane_count": 2,
+        "tab_count": 1,
+        "active_tab_id": "wG:t1",
+        "agent_status": "idle"
+      }
+    ]
+  }
+}

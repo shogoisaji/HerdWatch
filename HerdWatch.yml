@@ -1,0 +1,116 @@
+# XcodeGen プロジェクト定義: macOSアプリ（正本）
+# ファイルを追加したら `xcodegen generate -s HerdWatch.yml` を再実行してプロジェクトを更新する。
+name: HerdWatch
+
+options:
+  bundleIdPrefix: com.isaji134
+  deploymentTarget:
+    macOS: "26.0"
+    iOS: "26.0"
+  createIntermediateGroups: true
+  minimumXcodeGenVersion: "2.38.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    # ローカルは ad-hoc 署名（Apple Silicon で実行可・チーム署名不要）
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  HerdWatchShared:
+    path: Packages/HerdWatchShared
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: 2.9.3
+
+targets:
+  # 非サンドボックス（unixソケット接続・NSWorkspaceアクティベーション・herdr CLI起動のため）
+  HerdWatch:
+    type: application
+    platform: macOS
+    sources:
+      - path: HerdWatch
+        excludes:
+          - "Info.plist"
+    dependencies:
+      - package: HerdWatchShared
+      - package: Sparkle
+        product: Sparkle
+    info:
+      path: HerdWatch/Info.plist
+      properties:
+        NSPrincipalClass: NSApplication
+        LSMinimumSystemVersion: "26.0"
+        # Sparkle 自動更新
+        SUFeedURL: https://github.com/shogoisaji/HerdWatch/releases/latest/download/appcast.xml
+        SUPublicEDKey: AUY1LpfmqEOxdcO1OOF635kE9ikOUtUDhHOlfRcF9dY=
+        SUEnableAutomaticUpdates: true
+        SUAutomaticallyUpdate: false
+        SUShowReleaseNotes: true
+        SUAllowsAutomaticUpdates: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.isaji134.HerdWatch
+        ENABLE_HARDENED_RUNTIME: "YES"
+        ENABLE_PREVIEWS: "YES"
+        COMBINE_HIDPI_IMAGES: "YES"
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        CODE_SIGN_ENTITLEMENTS: HerdWatch/HerdWatch.entitlements
+
+  HerdWatchTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: HerdWatchTests
+        excludes:
+          - "Fixtures/**"
+      - path: HerdWatchTests/Fixtures
+        buildPhase: resources
+    dependencies:
+      - target: HerdWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.isaji134.HerdWatchTests
+        GENERATE_INFOPLIST_FILE: "YES"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/HerdWatch.app/Contents/MacOS/HerdWatch"
+
+  HerdWatchIOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: HerdWatchIOS
+        excludes:
+          - "Info.plist"
+    dependencies:
+      - package: HerdWatchShared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.isaji134.HerdWatchIOS
+        GENERATE_INFOPLIST_FILE: "YES"
+        INFOPLIST_FILE: HerdWatchIOS/Info.plist
+        ENABLE_PREVIEWS: "YES"
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
+
+schemes:
+  HerdWatch:
+    build:
+      targets:
+        HerdWatch: all
+        HerdWatchTests: [test]
+    test:
+      targets:
+        - HerdWatchTests
+    run:
+      config: Debug
+
+  HerdWatchIOS:
+    build:
+      targets:
+        HerdWatchIOS: all
+    run:
+      config: Debug

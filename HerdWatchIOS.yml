@@ -1,0 +1,52 @@
+# XcodeGen プロジェクト定義: iOS Companionアプリ（正本）
+# ファイルを追加したら `xcodegen generate -s HerdWatchIOS.yml` を再実行してプロジェクトを更新する。
+name: HerdWatchIOS
+
+options:
+  bundleIdPrefix: com.isaji134
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  minimumXcodeGenVersion: "2.38.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  HerdWatchShared:
+    path: Packages/HerdWatchShared
+
+targets:
+  # iOS Companion: MacのHerdWatchとMultipeerConnectivityで連携するリモコンアプリ。
+  # 真実源はMac（herdrソケット接続）。iOSは状態表示+タップフォーカスのみ。
+  # 共有コード（Domain・スプライト描画・CompanionProtocol・AnyRNG）は HerdWatchShared パッケージ経由で取得。
+  HerdWatchIOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: HerdWatchIOS
+        excludes:
+          - "Info.plist"
+    dependencies:
+      - package: HerdWatchShared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.isaji.HerdWatchIos
+        GENERATE_INFOPLIST_FILE: "YES"
+        INFOPLIST_FILE: HerdWatchIOS/Info.plist
+        ENABLE_PREVIEWS: "YES"
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
+
+schemes:
+  HerdWatchIOS:
+    build:
+      targets:
+        HerdWatchIOS: all
+    run:
+      config: Debug

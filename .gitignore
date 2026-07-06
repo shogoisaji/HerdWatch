@@ -1,0 +1,24 @@
+# XcodeGen 生成物（正本は HerdWatch.yml / HerdWatchIOS.yml）
+HerdWatch.xcodeproj/
+HerdWatchIOS.xcodeproj/
+# XcodeGen が info: から生成する Info.plist（正本は HerdWatch.yml）
+HerdWatch/Info.plist
+
+# SwiftPM ローカルパッケージのビルド成果物
+Packages/HerdWatchShared/.build/
+Packages/HerdWatchShared/.swiftpm/
+
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+
+# Release artifacts and local secrets
+dist/
+release/release.env
+*.p12
+AuthKey_*.p8
+
+# macOS
+.DS_Store

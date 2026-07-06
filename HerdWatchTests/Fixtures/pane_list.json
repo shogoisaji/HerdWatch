@@ -1,0 +1,184 @@
+{
+  "id": "probe_pane.list",
+  "result": {
+    "type": "pane_list",
+    "panes": [
+      {
+        "pane_id": "w9:p1",
+        "terminal_id": "term_6545794eeafbf9",
+        "workspace_id": "w9",
+        "tab_id": "w9:t1",
+        "focused": true,
+        "cwd": "/Users/example/src/sample-system",
+        "foreground_cwd": "/Users/example/src/sample-system",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "w9:pP",
+        "terminal_id": "term_65521d02b6fd02e",
+        "workspace_id": "w9",
+        "tab_id": "w9:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-system",
+        "foreground_cwd": "/Users/example/src/sample-system",
+        "agent_status": "unknown",
+        "revision": 0
+      },
+      {
+        "pane_id": "wB:p2",
+        "terminal_id": "term_654f83d57e61f28",
+        "workspace_id": "wB",
+        "tab_id": "wB:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-poc/datopotamab",
+        "foreground_cwd": "/Users/example/src/sample-poc/datopotamab",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wB:p8",
+        "terminal_id": "term_6555f7e635e913b",
+        "workspace_id": "wB",
+        "tab_id": "wB:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-poc/datopotamab",
+        "foreground_cwd": "/Users/example/src/sample-poc/datopotamab",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wE:p1",
+        "terminal_id": "term_65523086595992f",
+        "workspace_id": "wE",
+        "tab_id": "wE:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/ssm/skill-store/html-artifact",
+        "foreground_cwd": "/Users/shogo.isaji/src/ssm/skill-store/html-artifact",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wE:p4",
+        "terminal_id": "term_655943eef310b41",
+        "workspace_id": "wE",
+        "tab_id": "wE:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-root",
+        "foreground_cwd": "/Users/example/src/sample-root",
+        "agent": "claude",
+        "agent_status": "working",
+        "revision": 0
+      },
+      {
+        "pane_id": "wE:p2",
+        "terminal_id": "term_655239397f52832",
+        "workspace_id": "wE",
+        "tab_id": "wE:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/productbox",
+        "foreground_cwd": "/Users/shogo.isaji/src/productbox",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wE:p3",
+        "terminal_id": "term_655239399ab6433",
+        "workspace_id": "wE",
+        "tab_id": "wE:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/ssm/skill-store/anthropic/skill-creator",
+        "foreground_cwd": "/Users/shogo.isaji/src/ssm/skill-store/anthropic/skill-creator",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wF:p1",
+        "terminal_id": "term_6555d26bd0d6338",
+        "workspace_id": "wF",
+        "tab_id": "wF:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "foreground_cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wF:p3",
+        "terminal_id": "term_6555d79323da33a",
+        "workspace_id": "wF",
+        "tab_id": "wF:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "foreground_cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wC:p1",
+        "terminal_id": "term_65457c0409bb0d",
+        "workspace_id": "wC",
+        "tab_id": "wC:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-root",
+        "foreground_cwd": "/Users/example/src/sample-root",
+        "agent_status": "unknown",
+        "revision": 0
+      },
+      {
+        "pane_id": "wC:pA",
+        "terminal_id": "term_65523928d2fa630",
+        "workspace_id": "wC",
+        "tab_id": "wC:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-root",
+        "foreground_cwd": "/Users/example/src/sample-root",
+        "agent_status": "unknown",
+        "revision": 0
+      },
+      {
+        "pane_id": "wC:pB",
+        "terminal_id": "term_65523928edd9931",
+        "workspace_id": "wC",
+        "tab_id": "wC:t1",
+        "focused": false,
+        "cwd": "/Users/example/src/sample-root",
+        "foreground_cwd": "/Users/example/src/sample-root",
+        "agent_status": "unknown",
+        "revision": 0
+      },
+      {
+        "pane_id": "wG:p1",
+        "terminal_id": "term_655832789c5983e",
+        "workspace_id": "wG",
+        "tab_id": "wG:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "foreground_cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      },
+      {
+        "pane_id": "wG:p2",
+        "terminal_id": "term_655832922e01e3f",
+        "workspace_id": "wG",
+        "tab_id": "wG:t1",
+        "focused": false,
+        "cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "foreground_cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "agent": "claude",
+        "agent_status": "idle",
+        "revision": 0
+      }
+    ]
+  }
+}

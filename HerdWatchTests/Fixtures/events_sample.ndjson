@@ -1,0 +1,5 @@
+{"id": "sub", "result": {"type": "subscription_started"}}
+{"data": {"agent": "claude", "agent_status": "working", "pane_id": "w9:p1", "workspace_id": "w9"}, "event": "pane.agent_status_changed"}
+{"data": {"agent": "claude", "agent_status": "done", "pane_id": "w9:p1", "workspace_id": "w9"}, "event": "pane.agent_status_changed"}
+{"data": {"agent": "claude", "agent_status": "idle", "pane_id": "w9:p1", "workspace_id": "w9"}, "event": "pane.agent_status_changed"}
+{"data": {"agent": "claude", "agent_status": "working", "pane_id": "w9:p1", "workspace_id": "w9"}, "event": "pane.agent_status_changed"}

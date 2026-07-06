@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>HerdWatchIOS</string>
+    <key>CFBundleDisplayName</key>
+    <string>HerdWatch</string>
+    <key>UILaunchScreen</key>
+    <dict/>
+    <key>UIApplicationSupportsMultipleScenes</key>
+    <true/>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>HerdWatch Companionは同じWi-Fi上のMacのHerdWatchと通信し、エージェントの状態を表示します。</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_hrdwtch-cmp._tcp</string>
+    </array>
+</dict>
+</plist>
