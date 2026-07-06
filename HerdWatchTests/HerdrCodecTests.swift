@@ -36,7 +36,7 @@ final class HerdrCodecTests: XCTestCase {
         let resp = try JSONDecoder().decode(HerdrResponse.self, from: fixture("workspace_list"))
         let result = try XCTUnwrap(resp.result).reencoded(as: WorkspaceListResult.self)
         XCTAssertFalse(result.workspaces.isEmpty)
-        XCTAssertTrue(result.workspaces.contains { $0.label == "skill-store" })
+        XCTAssertTrue(result.workspaces.contains { $0.label == "gamma" })
     }
 
     func testDecodeErrorResponse() throws {

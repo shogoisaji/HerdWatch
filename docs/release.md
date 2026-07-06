@@ -1,23 +1,23 @@
-# HerdWatch リリース運用
+# HerdWatch Release Operations
 
-CodexBar の管理手法（GitHub Releases 正本 + `release: published` トリガ + Homebrew Cask 別 tap）を参考に、
-HerdWatch は **Developer ID 署名 + notarization + Sparkle 自動更新 + Homebrew Cask** の組み合わせで配信する。
+HerdWatch is distributed via **Developer ID signing + notarization + Sparkle
+auto-update + Homebrew Cask**, using GitHub Releases as the source of truth.
 
-## 配信経路
+## Distribution channels
 
-| 経路 | URL | 更新タイミング |
+| Channel | URL | Update trigger |
 |---|---|---|
-| GitHub Releases (DMG/zip/appcast) | https://github.com/shogoisaji/HerdWatch/releases | `release: published` で `release.yml` が自動ビルド・署名・アップロード |
-| Homebrew Cask | `brew install --cask shogoisaji/herdwatch/herdwatch` | `release.yml` から tap リポジトリへ `workflow_dispatch` → `update-cask.yml` が Cask を更新 |
-| Sparkle アプリ内自動更新 | `SUFeedURL` = `releases/latest/download/appcast.xml` | appcast.xml を各リリースに添付、アプリが起動時に確認 |
+| GitHub Releases (DMG/zip/appcast) | https://github.com/shogoisaji/HerdWatch/releases | `release: published` triggers `release.yml` — auto build, sign, upload |
+| Homebrew Cask | `brew install --cask shogoisaji/herdwatch/herdwatch` | `release.yml` dispatches `workflow_dispatch` to tap repo → `update-cask.yml` updates the Cask |
+| Sparkle in-app auto-update | `SUFeedURL` = `releases/latest/download/appcast.xml` | appcast.xml attached to each release; app checks on launch |
 
-Mac App Store は非サンドボックス（unix ソケット・NSWorkspace・herdr CLI 起動）のため対象外。
+The Mac App Store is not an option — the app is non-sandboxed (unix socket, NSWorkspace activation, herdr CLI launch).
 
-## リリース手順
+## Release procedure
 
-### 1. バージョンを上げる
+### 1. Bump the version
 
-`project.yml` の `MARKETING_VERSION`（と必要なら `CURRENT_PROJECT_VERSION`）を更新。
+Update `MARKETING_VERSION` (and `CURRENT_PROJECT_VERSION` if needed) in `project.yml`:
 
 ```yaml
 settings:
@@ -26,89 +26,89 @@ settings:
     CURRENT_PROJECT_VERSION: "2"
 ```
 
-コミットして main にマージ（CI がビルド+テストを検証）。
+Commit and merge to main (CI validates build + tests).
 
-### 2. タグを打って Release を publish
+### 2. Tag and publish a Release
 
 ```bash
 git tag v0.2.0
 git push origin v0.2.0
-# GitHub 上で Release を作成（publish すると release.yml が走る）
+# Create a Release on GitHub (publishing triggers release.yml)
 gh release create v0.2.0 --generate-notes --title "0.2.0"
 ```
 
-`release.yml` が自動で:
-1. xcodegen 再生成
-2. Developer ID 署名 + Hardened Runtime + entitlements で archive
-3. notarize + staple（app と DMG 両方）
-4. Sparkle update zip を Ed25519 で署名
-5. appcast.xml 生成
-6. `gh release upload` で DMG / zip / sha256 / appcast.xml を添付
-7. homebrew-herdwatch リポジトリへ `workflow_dispatch` で Cask 更新を指示
+`release.yml` automatically:
+1. Regenerates the Xcode project with xcodegen
+2. Archives with Developer ID signing + Hardened Runtime + entitlements
+3. Notarizes + staples (both app and DMG)
+4. Signs the Sparkle update zip with Ed25519
+5. Generates appcast.xml
+6. Uploads DMG / zip / sha256 / appcast.xml to the Release
+7. Dispatches a Cask update to the homebrew-herdwatch repository
 
-### 3. 確認
+### 3. Verify
 
-- Release ページに `HerdWatch-<ver>.dmg`, `.zip`, `.sha256`, `appcast.xml` が揃っている
-- `brew install --cask shogoisaji/herdwatch/herdwatch` で新版が入る
-- 既存ユーザーのアプリが Sparkle でアップデートを検知する
+- Release page has `HerdWatch-<ver>.dmg`, `.zip`, `.sha256`, `appcast.xml`
+- `brew install --cask shogoisaji/herdwatch/herdwatch` installs the new version
+- Existing users' apps detect the update via Sparkle
 
-## 必要な GitHub Secrets（shogoisaji/HerdWatch）
+## Required GitHub Secrets (shogoisaji/HerdWatch)
 
-リポジトリの Settings → Secrets and variables → Actions → New repository secret で設定する。
+Set these in Settings → Secrets and variables → Actions → New repository secret.
 
-| Secret 名 | 値 | 用途 |
+| Secret | Value | Used for |
 |---|---|---|
-| `APPLE_DEVELOPER_ID_CERT_P12_BASE64` | Developer ID Application 証明書 (.p12) を base64 化したもの | CI 上で keychain に import して署名 |
-| `APPLE_DEVELOPER_ID_CERT_PASSWORD` | 上記 .p12 のエクスポートパスワード | 証明書 import 時 |
+| `APPLE_DEVELOPER_ID_CERT_P12_BASE64` | Developer ID Application certificate (.p12) base64-encoded | Import to CI keychain for signing |
+| `APPLE_DEVELOPER_ID_CERT_PASSWORD` | Export password for the .p12 | Certificate import |
 | `APPLE_DEVELOPER_ID_NAME` | `Developer ID Application: Your Name (TEAMID)` | `CODE_SIGN_IDENTITY` |
 | `APPLE_TEAM_ID` | Apple Developer Team ID | `DEVELOPMENT_TEAM` / notarytool |
-| `APPLE_ID` | notarization 用 Apple ID | `notarytool submit` |
-| `APPLE_ID_PASSWORD` | App 専用パスワード (appleid.apple.com で生成) | `notarytool submit` |
-| `SPARKLE_PRIVATE_KEY_PEM` | Sparkle Ed25519 秘密鍵（`generate_keys -x` でエクスポートした .pem の内容） | `sign_update --ed-key-file` |
-| `HOMEBREW_TAP_TOKEN` | homebrew-herdwatch リポジトリへ dispatch するための PAT（`repo` + `workflow` スコープ） | Cask 自動更新 |
+| `APPLE_ID` | Apple ID for notarization | `notarytool submit` |
+| `APPLE_ID_PASSWORD` | App-specific password (generated at appleid.apple.com) | `notarytool submit` |
+| `SPARKLE_PRIVATE_KEY_PEM` | Sparkle Ed25519 private key (exported via `generate_keys -x`) | `sign_update --ed-key-file` |
+| `HOMEBREW_TAP_TOKEN` | PAT with `repo` + `workflow` scopes to dispatch to homebrew-herdwatch | Cask auto-update |
 
-### 証明書・鍵の準備手順
+### Preparing credentials
 
-#### Developer ID 証明書
+#### Developer ID certificate
 
-1. Apple Developer → Certificates, Identifiers & Profiles → 新規証明書 `Developer ID Application`
-2. Keychain Access で鍵を書き出し (.p12、パスワード設定)
-3. base64 化: `base64 -i developer-id.p12 | pbcopy` → `APPLE_DEVELOPER_ID_CERT_P12_BASE64` に貼り付け
+1. Apple Developer → Certificates, Identifiers & Profiles → create a `Developer ID Application` certificate
+2. Export the key from Keychain Access as .p12 (set a password)
+3. Base64-encode: `base64 -i developer-id.p12 | pbcopy` → paste into `APPLE_DEVELOPER_ID_CERT_P12_BASE64`
 
-#### notarization 用 App 専用パスワード
+#### Notarization app-specific password
 
-1. https://appleid.apple.com → サインイン → アプリ専用パスワード → 生成
-2. `APPLE_ID_PASSWORD` に設定
+1. https://appleid.apple.com → sign in → App-Specific Passwords → generate
+2. Set `APPLE_ID_PASSWORD`
 
-#### Sparkle Ed25519 鍵
+#### Sparkle Ed25519 key
 
-鍵ペアは既に生成済み（公開鍵は `project.yml` の `SUPublicEDKey` に埋込済み）。
-秘密鍵を CI secret に登録する:
+The key pair is already generated (public key is embedded in `project.yml` as `SUPublicEDKey`).
+Register the private key as a CI secret:
 
 ```bash
-# ローカルで（鍵を Keychain に持っている端末で）
+# On the machine that has the key in Keychain
 generate_keys -x /tmp/ed25519_priv.pem
 cat /tmp/ed25519_priv.pem
-# 出力内容を SPARKLE_PRIVATE_KEY_PEM に貼り付け
+# Paste the output into SPARKLE_PRIVATE_KEY_PEM
 ```
 
-> 公開鍵: `project.yml` の `SUPublicEDKey`（`info:` → Info.plist に生成）
-> 秘密鍵は絶対にコミットしない（`.gitignore` で `*.pem` 等を除外済み）。
+> Public key: `project.yml` `SUPublicEDKey` (→ Info.plist via `info:`)
+> Never commit the private key (`.gitignore` excludes `*.pem`).
 
-#### Homebrew tap 用 PAT
+#### Homebrew tap PAT
 
-1. https://github.com/settings/tokens → Generate new token (classic) → `repo` + `workflow` スコープ
-2. `HOMEBREW_TAP_TOKEN` に設定（shogoisaji/HerdWatch リポジトリの secret）
+1. https://github.com/settings/tokens → Generate new token (classic) → `repo` + `workflow` scopes
+2. Set `HOMEBREW_TAP_TOKEN` (in the shogoisaji/HerdWatch repo secrets)
 
-## ローカルリリース（CI 使わない場合）
+## Local release (without CI)
 
-`scripts/release-local.sh` が R2/static ホスティング向けの同等のパイプラインを提供する。
-`release/release.env.example` を `release/release.env` にコピーして各値を埋める。
+`scripts/release-local.sh` provides an equivalent pipeline for R2/static hosting.
+Copy `release/release.env.example` to `release/release.env` and fill in values.
 
 ```bash
 cp release/release.env.example release/release.env
-# release.env を編集
+# Edit release.env
 ./scripts/release-local.sh
 ```
 
-CI 運用が基本だが、緊急時やオフライン署名に使う。
+CI is the primary path; use this for emergencies or offline signing.

@@ -6,7 +6,7 @@
       {
         "workspace_id": "w9",
         "number": 1,
-        "label": "uchiken",
+        "label": "alpha",
         "focused": true,
         "pane_count": 2,
         "tab_count": 1,
@@ -16,7 +16,7 @@
       {
         "workspace_id": "wB",
         "number": 2,
-        "label": "PoC",
+        "label": "beta",
         "focused": false,
         "pane_count": 2,
         "tab_count": 1,
@@ -26,7 +26,7 @@
       {
         "workspace_id": "wE",
         "number": 3,
-        "label": "skill-store",
+        "label": "gamma",
         "focused": false,
         "pane_count": 4,
         "tab_count": 1,
@@ -36,7 +36,7 @@
       {
         "workspace_id": "wF",
         "number": 4,
-        "label": "crc-support",
+        "label": "delta",
         "focused": false,
         "pane_count": 2,
         "tab_count": 1,
@@ -46,7 +46,7 @@
       {
         "workspace_id": "wC",
         "number": 5,
-        "label": "caf",
+        "label": "epsilon",
         "focused": false,
         "pane_count": 3,
         "tab_count": 1,
@@ -56,7 +56,7 @@
       {
         "workspace_id": "wG",
         "number": 6,
-        "label": "pev-management-system",
+        "label": "zeta",
         "focused": false,
         "pane_count": 2,
         "tab_count": 1,

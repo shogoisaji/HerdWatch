@@ -11,8 +11,8 @@
         "tab_id": "w9:t1",
         "pane_id": "w9:p1",
         "focused": true,
-        "cwd": "/Users/example/src/sample-system",
-        "foreground_cwd": "/Users/example/src/sample-system",
+        "cwd": "/Users/example/src/sample-alpha",
+        "foreground_cwd": "/Users/example/src/sample-alpha",
         "revision": 0
       },
       {
@@ -23,8 +23,8 @@
         "tab_id": "wB:t1",
         "pane_id": "wB:p2",
         "focused": false,
-        "cwd": "/Users/example/src/sample-poc/datopotamab",
-        "foreground_cwd": "/Users/example/src/sample-poc/datopotamab",
+        "cwd": "/Users/example/src/sample-beta/prototype",
+        "foreground_cwd": "/Users/example/src/sample-beta/prototype",
         "revision": 0
       },
       {
@@ -35,8 +35,8 @@
         "tab_id": "wB:t1",
         "pane_id": "wB:p8",
         "focused": false,
-        "cwd": "/Users/example/src/sample-poc/datopotamab",
-        "foreground_cwd": "/Users/example/src/sample-poc/datopotamab",
+        "cwd": "/Users/example/src/sample-beta/prototype",
+        "foreground_cwd": "/Users/example/src/sample-beta/prototype",
         "revision": 0
       },
       {
@@ -47,8 +47,8 @@
         "tab_id": "wE:t1",
         "pane_id": "wE:p1",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/ssm/skill-store/html-artifact",
-        "foreground_cwd": "/Users/shogo.isaji/src/ssm/skill-store/html-artifact",
+        "cwd": "/Users/example/src/sample-gamma/artifact",
+        "foreground_cwd": "/Users/example/src/sample-gamma/artifact",
         "revision": 0
       },
       {
@@ -59,8 +59,8 @@
         "tab_id": "wE:t1",
         "pane_id": "wE:p4",
         "focused": false,
-        "cwd": "/Users/example/src/sample-root",
-        "foreground_cwd": "/Users/example/src/sample-root",
+        "cwd": "/Users/example/src/sample-gamma",
+        "foreground_cwd": "/Users/example/src/sample-gamma",
         "revision": 0
       },
       {
@@ -71,8 +71,8 @@
         "tab_id": "wE:t1",
         "pane_id": "wE:p2",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/productbox",
-        "foreground_cwd": "/Users/shogo.isaji/src/productbox",
+        "cwd": "/Users/example/src/sample-gamma/product",
+        "foreground_cwd": "/Users/example/src/sample-gamma/product",
         "revision": 0
       },
       {
@@ -83,8 +83,8 @@
         "tab_id": "wE:t1",
         "pane_id": "wE:p3",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/ssm/skill-store/anthropic/skill-creator",
-        "foreground_cwd": "/Users/shogo.isaji/src/ssm/skill-store/anthropic/skill-creator",
+        "cwd": "/Users/example/src/sample-gamma/creator",
+        "foreground_cwd": "/Users/example/src/sample-gamma/creator",
         "revision": 0
       },
       {
@@ -95,8 +95,8 @@
         "tab_id": "wF:t1",
         "pane_id": "wF:p1",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
-        "foreground_cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "cwd": "/Users/example/src/sample-delta",
+        "foreground_cwd": "/Users/example/src/sample-delta",
         "revision": 0
       },
       {
@@ -107,8 +107,8 @@
         "tab_id": "wF:t1",
         "pane_id": "wF:p3",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
-        "foreground_cwd": "/Users/shogo.isaji/src/nobelpharma/crc-support",
+        "cwd": "/Users/example/src/sample-delta",
+        "foreground_cwd": "/Users/example/src/sample-delta",
         "revision": 0
       },
       {
@@ -119,8 +119,8 @@
         "tab_id": "wG:t1",
         "pane_id": "wG:p1",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
-        "foreground_cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "cwd": "/Users/example/src/sample-zeta",
+        "foreground_cwd": "/Users/example/src/sample-zeta",
         "revision": 0
       },
       {
@@ -131,8 +131,8 @@
         "tab_id": "wG:t1",
         "pane_id": "wG:p2",
         "focused": false,
-        "cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
-        "foreground_cwd": "/Users/shogo.isaji/src/astellas/pev-management-system",
+        "cwd": "/Users/example/src/sample-zeta",
+        "foreground_cwd": "/Users/example/src/sample-zeta",
         "revision": 0
       }
     ]
