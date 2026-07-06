@@ -18,6 +18,7 @@ xcuserdata/
 dist/
 release/release.env
 *.p12
+*.pem
 AuthKey_*.p8
 
 # macOS

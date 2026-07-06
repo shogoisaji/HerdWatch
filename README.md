@@ -1,10 +1,39 @@
 # HerdWatch
 
+[![Latest release](https://img.shields.io/github/v/release/shogoisaji/HerdWatch?style=flat-square)](https://github.com/shogoisaji/HerdWatch/releases/latest)
+[![macOS 26+](https://img.shields.io/badge/macOS-26%2B-000?style=flat-square)](https://github.com/shogoisaji/HerdWatch/releases/latest)
+[![Homebrew](https://img.shields.io/badge/brew-shogoisaji%2Fherdwatch%2Fherdwatch-orange?style=flat-square)](https://github.com/shogoisaji/homebrew-herdwatch)
+[![License: MIT](https://img.shields.io/badge/license-MIT-6e5aff?style=flat-square)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/shogoisaji/HerdWatch/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/shogoisaji/HerdWatch/actions/workflows/ci.yml)
+
 herdr 上で並走する AI コーディングエージェントの状態を、ピクセルアートの家畜キャラクターとして専用ウィンドウに常時可視化する macOS アプリ。「どの pane が完了したか・どれを見るべきか」を一瞥で判断し、キャラをタップして該当 pane へ即ジャンプするために存在する。
 
 状態の真実源は herdr であり、HerdWatch は独自の未読管理・永続化を持たない（→ [ADR-0001](docs/adr/0001-herdr-as-single-source-of-truth.md)）。そのため、アプリが正しく動くには **herdr 側のセットアップ** が前提になる。
 
 > 用語・設計判断の正本は [CONTEXT.md](CONTEXT.md) と [docs/adr/](docs/adr/)。
+
+## インストール
+
+### Homebrew（推奨）
+
+```bash
+brew tap shogoisaji/herdwatch
+brew install --cask herdwatch
+```
+
+アップデート:
+
+```bash
+brew upgrade --cask herdwatch
+```
+
+### GitHub Releases から直接ダウンロード
+
+<https://github.com/shogoisaji/HerdWatch/releases/latest> から `HerdWatch-<version>.dmg` をダウンロードしてドラッグインストール。
+
+### アプリ内自動更新
+
+HerdWatch は [Sparkle](https://sparkle-project.org/) によりアプリ内自動更新に対応している。新しいリリースが公開されると、起動中のアプリが appcast を確認しアップデートを通知する（メニュー「アップデートを確認…」から手動確認も可）。
 
 ## 必要環境
 

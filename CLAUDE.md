@@ -78,3 +78,14 @@ MacアプリとiOSアプリ(`HerdWatchIOS`)を同じWi-Fi上でMultipeerConnecti
 
 - アプリ側で状態の未読管理・永続化をしない（ADR-0001。永続化はキャラ割当のみ）。
 - pane内容の読み取り（`pane.read` 等）や外部送信をしない。状態表示に必要なメタデータのみ扱う。
+
+## リリース・配信
+
+配信経路・必要シークレット・リリース手順の正本は [`docs/release.md`](./docs/release.md)。
+
+- 配信: GitHub Releases (DMG) + Homebrew Cask (`shogoisaji/herdwatch/herdwatch`) + Sparkle アプリ内自動更新
+- CI: `.github/workflows/ci.yml`（PR/push で shared tests / macOS build+test / iOS build）
+- リリース: `.github/workflows/release.yml`（`release: published` で署名・notarize・DMG・appcast・Cask更新dispatch）
+- Mac App Store は非サンドボックスのため対象外。iOS Companion は TestFlight/App Store の別トラック。
+- Sparkle: SwiftPM `Sparkle` 2.9.3。`SUPublicEDKey` / `SUFeedURL` は `HerdWatch.yml` の `info:` で Info.plist 生成。秘密鍵は CI secret `SPARKLE_PRIVATE_KEY_PEM`（絶対にコミットしない）。
+- Tap リポジトリ: `shogoisaji/homebrew-herdwatch`（`update-cask.yml` が Cask を自動更新）
