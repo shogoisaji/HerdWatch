@@ -16,7 +16,7 @@ permissions:
 jobs:
   release-macos:
     name: Build, sign, notarize, package (macOS)
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 40
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
@@ -26,18 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode 26
+      - name: Xcode version
         run: |
-          set -euo pipefail
-          for candidate in /Applications/Xcode_26.3.app /Applications/Xcode_26.2.app /Applications/Xcode_26.1.app /Applications/Xcode_26.app; do
-            if [[ -d "$candidate" ]]; then
-              sudo xcode-select -s "${candidate}/Contents/Developer"
-              echo "DEVELOPER_DIR=${candidate}/Contents/Developer" >> "$GITHUB_ENV"
-              break
-            fi
-          done
-          [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 26.* ]]
           /usr/bin/xcodebuild -version
+          [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 26.* ]]
 
       - name: Validate release tag
         run: |

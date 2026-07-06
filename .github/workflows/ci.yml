@@ -15,22 +15,13 @@ permissions:
 jobs:
   shared-tests:
     name: Shared package tests (swift test)
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode 26
-        run: |
-          set -euo pipefail
-          for candidate in /Applications/Xcode_26.3.app /Applications/Xcode_26.2.app /Applications/Xcode_26.1.app /Applications/Xcode_26.app; do
-            if [[ -d "$candidate" ]]; then
-              sudo xcode-select -s "${candidate}/Contents/Developer"
-              echo "DEVELOPER_DIR=${candidate}/Contents/Developer" >> "$GITHUB_ENV"
-              break
-            fi
-          done
-          /usr/bin/xcodebuild -version
+      - name: Xcode version
+        run: /usr/bin/xcodebuild -version
 
       - name: swift test (HerdWatchShared)
         working-directory: Packages/HerdWatchShared
@@ -38,22 +29,13 @@ jobs:
 
   macos-build-test:
     name: macOS build + test (xcodebuild)
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode 26
-        run: |
-          set -euo pipefail
-          for candidate in /Applications/Xcode_26.3.app /Applications/Xcode_26.2.app /Applications/Xcode_26.1.app /Applications/Xcode_26.app; do
-            if [[ -d "$candidate" ]]; then
-              sudo xcode-select -s "${candidate}/Contents/Developer"
-              echo "DEVELOPER_DIR=${candidate}/Contents/Developer" >> "$GITHUB_ENV"
-              break
-            fi
-          done
-          /usr/bin/xcodebuild -version
+      - name: Xcode version
+        run: /usr/bin/xcodebuild -version
 
       - name: Install xcodegen
         run: brew install xcodegen
@@ -83,22 +65,13 @@ jobs:
 
   ios-build:
     name: iOS companion build
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode 26
-        run: |
-          set -euo pipefail
-          for candidate in /Applications/Xcode_26.3.app /Applications/Xcode_26.2.app /Applications/Xcode_26.1.app /Applications/Xcode_26.app; do
-            if [[ -d "$candidate" ]]; then
-              sudo xcode-select -s "${candidate}/Contents/Developer"
-              echo "DEVELOPER_DIR=${candidate}/Contents/Developer" >> "$GITHUB_ENV"
-              break
-            fi
-          done
-          /usr/bin/xcodebuild -version
+      - name: Xcode version
+        run: /usr/bin/xcodebuild -version
 
       - name: Install xcodegen
         run: brew install xcodegen
