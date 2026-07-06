@@ -39,7 +39,6 @@ HerdWatch ships with [Sparkle](https://sparkle-project.org/). When a new release
 
 - macOS 26.0 or later (non-sandboxed)
 - [herdr](https://herdr.dev/) installed and its server running
-- iOS 26.0 or later for the iOS companion
 
 ## herdr setup (required)
 
@@ -142,36 +141,23 @@ Adjustable in Settings:
 - **Socket path**: only for named sessions (empty = `~/.config/herdr/herdr.sock`)
 - **Always on top** / **Character size** / **Background** / **Auto rearrange** / **Show working elapsed** / **Display language**
 
-## iOS companion (HerdWatchIOS)
-
-The Mac app and the iOS app pair over Wi-Fi using MultipeerConnectivity (local P2P, no external server). The Mac's PastureStore remains the single source of truth (ADR-0001). iOS is view-only with tap-to-focus.
-
-- Service type: `hrdwtch-cmp` (Bonjour `_hrdwtch-cmp._tcp`)
-- iOS declares `NSLocalNetworkUsageDescription` / `NSBonjourServices` in Info.plist (iOS 14+ local network permission)
-- No herdr setup needed on iOS — the Mac talks to herdr and ships snapshots to iOS
-
 ## Build
 
 Regenerate the Xcode project with XcodeGen before building (`.xcodeproj` is generated, do not edit by hand).
 
 ```bash
-# Regenerate projects (required when files are added)
-xcodegen generate -s HerdWatch.yml      # macOS app
-xcodegen generate -s HerdWatchIOS.yml   # iOS app
+# Regenerate project (required when files are added)
+xcodegen generate -s HerdWatch.yml
 
-# macOS app
+# Build
 xcodebuild build -project HerdWatch.xcodeproj -scheme HerdWatch -destination 'platform=macOS'
 xcodebuild test  -project HerdWatch.xcodeproj -scheme HerdWatch -destination 'platform=macOS'
-
-# iOS app
-xcodebuild build -project HerdWatchIOS.xcodeproj -scheme HerdWatchIOS \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
 # Shared package tests
 cd Packages/HerdWatchShared && swift test
 ```
 
-Local builds use ad-hoc signing (`CODE_SIGN_IDENTITY = "-"`). Two `.xcodeproj` files live at the repo root, so always pass `-project` to `xcodebuild`.
+Local builds use ad-hoc signing (`CODE_SIGN_IDENTITY = "-"`).
 
 ## Troubleshooting
 
