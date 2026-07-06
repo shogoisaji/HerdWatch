@@ -6,93 +6,92 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-6e5aff?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/shogoisaji/HerdWatch/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/shogoisaji/HerdWatch/actions/workflows/ci.yml)
 
-herdr 上で並走する AI コーディングエージェントの状態を、ピクセルアートの家畜キャラクターとして専用ウィンドウに常時可視化する macOS アプリ。「どの pane が完了したか・どれを見るべきか」を一瞥で判断し、キャラをタップして該当 pane へ即ジャンプするために存在する。
+A macOS app that visualizes AI coding agents running in [herdr](https://herdr.dev/) as pixel-art livestock characters in a dedicated window. Tell at a glance which pane is done and which one needs your attention — tap a character to jump straight to that pane.
 
-状態の真実源は herdr であり、HerdWatch は独自の未読管理・永続化を持たない（→ [ADR-0001](docs/adr/0001-herdr-as-single-source-of-truth.md)）。そのため、アプリが正しく動くには **herdr 側のセットアップ** が前提になる。
+HerdWatch is a mirror of herdr's state. It does not track its own unread state or persist anything beyond character assignments ([ADR-0001](docs/adr/0001-herdr-as-single-source-of-truth.md)). **herdr must be set up first.**
 
-> 用語・設計判断の正本は [CONTEXT.md](CONTEXT.md) と [docs/adr/](docs/adr/)。
+> Design decisions live in [CONTEXT.md](CONTEXT.md) and [docs/adr/](docs/adr/).
 
-## インストール
+## Install
 
-### Homebrew（推奨）
+### Homebrew (recommended)
 
 ```bash
 brew tap shogoisaji/herdwatch
 brew install --cask herdwatch
 ```
 
-アップデート:
+Update:
 
 ```bash
 brew upgrade --cask herdwatch
 ```
 
-### GitHub Releases から直接ダウンロード
+### GitHub Releases
 
-<https://github.com/shogoisaji/HerdWatch/releases/latest> から `HerdWatch-<version>.dmg` をダウンロードしてドラッグインストール。
+Download `HerdWatch-<version>.dmg` from <https://github.com/shogoisaji/HerdWatch/releases/latest> and drag to install.
 
-### アプリ内自動更新
+### In-app updates
 
-HerdWatch は [Sparkle](https://sparkle-project.org/) によりアプリ内自動更新に対応している。新しいリリースが公開されると、起動中のアプリが appcast を確認しアップデートを通知する（メニュー「アップデートを確認…」から手動確認も可）。
+HerdWatch ships with [Sparkle](https://sparkle-project.org/). When a new release is published, running apps check the appcast and prompt to update. You can also check manually via the menu item **Check for Updates…**.
 
-## 必要環境
+## Requirements
 
-- macOS 26.0 以降（非サンドボックス）
-- [herdr](https://herdr.dev/) がインストール済みで、サーバーが起動していること
-- iOS Companion（`HerdWatchIOS`）を使う場合は iOS 26.0 以降
+- macOS 26.0 or later (non-sandboxed)
+- [herdr](https://herdr.dev/) installed and its server running
+- iOS 26.0 or later for the iOS companion
 
-## herdr 側のセットアップ（必須）
+## herdr setup (required)
 
-HerdWatch は herdr のローカルソケット API（NDJSON / JSON-RPC）を読み、エージェント状態を鏡写しに表示する。ソケットが存在しないと接続できない。
+HerdWatch reads herdr's local socket API (NDJSON / JSON-RPC) and mirrors agent state. It cannot connect unless the socket exists.
 
-### 1. herdr をインストールする
+### 1. Install herdr
 
-公式ドキュメント: https://herdr.dev/ja/docs/install/
+Docs: <https://herdr.dev/docs/install/>
 
 ```bash
-# macOS / Linux
 curl -fsSL https://herdr.dev/install.sh | sh
-# または
+# or
 brew install herdr
 ```
 
-バージョン確認:
+Verify:
 
 ```bash
 herdr --version
 ```
 
-### 2. herdr サーバーを起動しておく
+### 2. Keep the herdr server running
 
-HerdWatch が接続するソケットは herdr の **サーバープロセスが起動中にのみ存在** する。ターミナルで `herdr` を実行してセッションを開いておくこと。
+The socket only exists while the herdr server process is running. Open a session in a terminal:
 
 ```bash
 herdr
 ```
 
-サーバーを止めるとソケットが消え、HerdWatch は再接続を試み続ける（herdr を再起動すれば自動復帰する）。
+Stopping the server removes the socket; HerdWatch keeps retrying and recovers automatically once herdr restarts.
 
-### 3. ソケットパスを確認する
+### 3. Check the socket path
 
-HerdWatch はデフォルトで herdr の **デフォルトセッション** のソケットを見る:
+By default HerdWatch watches the default session socket:
 
 ```
 ~/.config/herdr/herdr.sock
 ```
 
-**名前付きセッション**（`herdr session attach <name>`）を使っている場合はソケットパスが異なる:
+For a **named session** (`herdr session attach <name>`):
 
 ```
 ~/.config/herdr/sessions/<name>/herdr.sock
 ```
 
-この場合は HerdWatch の設定画面「ソケットパス」に上記パスを入力する（空 = デフォルトセッション）。ソケットパスの解決順は herdr の仕様に従う（`HERDR_SOCKET_PATH` / `HERDR_SESSION` で上書き可能だが、HerdWatch 側では設定画面の値が最優先）。
+Enter that path in HerdWatch's Settings → **Socket path** (empty = default session).
 
-### 4. エージェントインテグレーションを入れる（推奨・状態精度に直結）
+### 4. Install agent integrations (recommended)
 
-herdr はインテグレーションなしでもスクリーンマニフェストでエージェント状態を推定するが、フック/プラグインによるライフサイクル権威を持つエージェントでは **インテグレーションを入れると状態が正確になる**。HerdWatch は herdr の状態をそのまま鏡写しするため（ADR-0001）、herdr 側の精度がそのままキャラ表示の精度になる。
+herdr can estimate agent state from the screen manifest without integrations, but agents that own their lifecycle via hooks/plugins report state more accurately when the integration is installed. HerdWatch mirrors herdr exactly (ADR-0001), so herdr's accuracy is HerdWatch's accuracy.
 
-使っているエージェントごとにインストールする:
+Install per agent you use:
 
 ```bash
 herdr integration install claude
@@ -110,100 +109,101 @@ herdr integration install qodercli
 herdr integration install cursor
 ```
 
-状態とインストール済みバージョンを確認:
+Check status:
 
 ```bash
 herdr integration status
 ```
 
-対応エージェントと「どのシグナルが状態の権威か」の一覧は https://herdr.dev/ja/docs/agents/ を参照。
+See <https://herdr.dev/docs/agents/> for the full list and which signal is authoritative per agent.
 
-> **注意（コメント吹き出しについて）**: `pane.report_agent` の `message` は書き込み専用で `pane.list` / `pane.get` / `agent.get` / `pane.agent_status_changed` のいずれにも現れない（実測）。読めるのは `custom_status`（最大32文字）のみだが、Claude Code 等の組み込み対応エージェントは自動報告しないため、ユーザー hook から明示的に `report-agent` を呼ばない限り常に空になる。よって HerdWatch にキャラのコメント吹き出し機能は実装していない。
+> **Note on comment bubbles:** `pane.report_agent`'s `message` is write-only and never appears in `pane.list` / `pane.get` / `agent.get` / `pane.agent_status_changed` (verified by testing). The only readable field is `custom_status` (max 32 chars), but built-in agents like Claude Code do not auto-report it, so it is always empty unless a user hook calls `report-agent` explicitly. HerdWatch therefore does not implement character comment bubbles.
 
-### 5. herdr CLI を PATH に通す（フォールバック用）
+### 5. Put `herdr` on PATH (fallback)
 
-キャラクターをタップしたときのフォーカス動作は:
+Tapping a character focuses the pane via:
 
-1. ソケット API `agent.focus` を叩く
-2. 失敗時のみ `herdr agent focus <pane_id>` CLI にフォールバック
+1. Socket API `agent.focus`
+2. On failure, falls back to `herdr agent focus <pane_id>` CLI
 
-CLI フォールバックは次の順で `herdr` バイナリを探す:
+The CLI is searched in this order:
 
 - `~/homebrew/bin/herdr`
 - `/opt/homebrew/bin/herdr`
 - `/usr/local/bin/herdr`
 
-ソケット経由が基本路線なので必須ではないが、`brew install herdr` などで PATH に置いておくと保険になる。
+Socket is the primary path, so this is optional, but `brew install herdr` gives you a safety net.
 
-## HerdWatch アプリの設定
+## App settings
 
-設定画面から以下を調整できる:
+Adjustable in Settings:
 
-- **ターミナルアプリ**: キャラタップ時に前面化するターミナル（空 = 起動中の既知ターミナルを自動選択: iTerm2 / Ghostty / WezTerm / kitty / Alacritty / Warp / ターミナル）
-- **ソケットパス**: 名前付きセッション利用時のみ変更（空 = `~/.config/herdr/herdr.sock`）
-- **常に最前面** / **キャラサイズ** / **背景** / **自動再配置** / **working 経過時間表示** / **表示言語**
+- **Terminal app**: which terminal to bring to front on character tap (empty = auto-select a known running terminal: iTerm2 / Ghostty / WezTerm / kitty / Alacritty / Warp / Terminal)
+- **Socket path**: only for named sessions (empty = `~/.config/herdr/herdr.sock`)
+- **Always on top** / **Character size** / **Background** / **Auto rearrange** / **Show working elapsed** / **Display language**
 
-## iOS Companion（HerdWatchIOS）
+## iOS companion (HerdWatchIOS)
 
-Mac アプリと iOS アプリを同じ Wi-Fi 上で MultipeerConnectivity（ローカル P2P・外部サーバなし）で連携させる。真実源は Mac の PastureStore のまま（ADR-0001）。iOS は状態表示＋タップフォーカスのみ。
+The Mac app and the iOS app pair over Wi-Fi using MultipeerConnectivity (local P2P, no external server). The Mac's PastureStore remains the single source of truth (ADR-0001). iOS is view-only with tap-to-focus.
 
-- サービス型: `hrdwtch-cmp`（Bonjour `_hrdwtch-cmp._tcp`）
-- iOS 側は `NSLocalNetworkUsageDescription` / `NSBonjourServices` を Info.plist で宣言済み（iOS 14+ のローカネットワーク権限）
-- iOS 側に herdr のセットアップは不要（Mac 側が herdr と通信し、iOS は Mac からスナップショットを受け取る）
+- Service type: `hrdwtch-cmp` (Bonjour `_hrdwtch-cmp._tcp`)
+- iOS declares `NSLocalNetworkUsageDescription` / `NSBonjourServices` in Info.plist (iOS 14+ local network permission)
+- No herdr setup needed on iOS — the Mac talks to herdr and ships snapshots to iOS
 
-## ビルド
+## Build
 
-リポジトリルートで XcodeGen でプロジェクトを再生成してからビルドする（`.xcodeproj` は生成物・手編集禁止）。
+Regenerate the Xcode project with XcodeGen before building (`.xcodeproj` is generated, do not edit by hand).
 
 ```bash
-# プロジェクト再生成（ファイル追加時は必須）
-xcodegen generate -s HerdWatch.yml      # macOS アプリ
-xcodegen generate -s HerdWatchIOS.yml   # iOS アプリ
+# Regenerate projects (required when files are added)
+xcodegen generate -s HerdWatch.yml      # macOS app
+xcodegen generate -s HerdWatchIOS.yml   # iOS app
 
-# macOS アプリ
+# macOS app
 xcodebuild build -project HerdWatch.xcodeproj -scheme HerdWatch -destination 'platform=macOS'
 xcodebuild test  -project HerdWatch.xcodeproj -scheme HerdWatch -destination 'platform=macOS'
 
-# iOS アプリ
+# iOS app
 xcodebuild build -project HerdWatchIOS.xcodeproj -scheme HerdWatchIOS \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
-# 共有パッケージの単体テスト
+# Shared package tests
 cd Packages/HerdWatchShared && swift test
 ```
 
-ローカルは ad-hoc 署名（`CODE_SIGN_IDENTITY = "-"`）。ルートに2つの `.xcodeproj` があるため `xcodebuild` には `-project` を明示する。
+Local builds use ad-hoc signing (`CODE_SIGN_IDENTITY = "-"`). Two `.xcodeproj` files live at the repo root, so always pass `-project` to `xcodebuild`.
 
-## トラブルシューティング
+## Troubleshooting
 
-### キャラが1匹も表示されない / 接続できない
+### No characters show / cannot connect
 
-1. `herdr` サーバーが起動中か確認（`herdr status`）。ソケットはサーバー起動中のみ存在する。
-2. ソケットファイルがあるか確認: `ls ~/.config/herdr/herdr.sock`
-3. 名前付きセッションを使っている場合は設定画面のソケットパスを `~/.config/herdr/sessions/<name>/herdr.sock` に設定する。
-4. herdr ログ: `~/.config/herdr/herdr.log`, `herdr-server.log`, `herdr-client.log`
+1. Is the herdr server running? (`herdr status`) The socket only exists while it is.
+2. Does the socket file exist? `ls ~/.config/herdr/herdr.sock`
+3. Using a named session? Set Settings → Socket path to `~/.config/herdr/sessions/<name>/herdr.sock`.
+4. herdr logs: `~/.config/herdr/herdr.log`, `herdr-server.log`, `herdr-client.log`
 
-### 状態が正しくない / blocked にならない
+### State is wrong / never goes `blocked`
 
-herdr の状態精度そのもの。HerdWatch 側では直さない（ADR-0001）。
+This is herdr's accuracy, not HerdWatch's. HerdWatch does not fix it (ADR-0001).
 
 ```bash
-herdr agent list                              # herdr が見ているエージェント一覧
-herdr agent explain <target> --json           # なぜその状態になったか
-herdr integration status                      # インテグレーション未導入なら入れる
+herdr agent list                              # agents herdr sees
+herdr agent explain <target> --json           # why it's in that state
+herdr integration status                      # install integrations if missing
 ```
 
-スクリーンマニフェスト方式のエージェントでは `blocked` 判定は厳格で、未知のプロンプト形は `idle` にフォールバックする（herdr の仕様）。インテグレーションを入れるとライフサイクルフックが権威になり精度が上がる。
+Screen-manifest agents judge `blocked` strictly and fall back to `idle` for unknown prompt shapes (herdr's spec). Integrations make lifecycle hooks authoritative and improve accuracy.
 
-### キャラをタップしても pane に飛ばない
+### Tapping a character does not jump to the pane
 
-1. ターミナルアプリが起動しているか（HerdWatch は起動中のターミナルを前面化する）。
-2. herdr CLI が探索パスにあれば CLI フォールバックが効く（`~/homebrew/bin/herdr` / `/opt/homebrew/bin/herdr` / `/usr/local/bin/herdr`）。
-3. `herdr agent focus <pane_id>` を手動で実行して herdr 側の挙動を確認。
+1. Is your terminal app running? HerdWatch brings a running terminal to front.
+2. If `herdr` is on PATH, the CLI fallback works (`~/homebrew/bin/herdr` / `/opt/homebrew/bin/herdr` / `/usr/local/bin/herdr`).
+3. Try `herdr agent focus <pane_id>` manually to check herdr's behavior.
 
-## 関連ドキュメント
+## Documentation
 
-- [CONTEXT.md](CONTEXT.md) — 用語定義
-- [docs/adr/](docs/adr/) — 設計判断の正本
-- [CLAUDE.md](CLAUDE.md) — 実装ルール・herdr プロトコルの実測制約
-- herdr 公式ドキュメント: https://herdr.dev/ja/docs/
+- [CONTEXT.md](CONTEXT.md) — terminology
+- [docs/adr/](docs/adr/) — design decisions
+- [docs/release.md](docs/release.md) — release & distribution
+- [CLAUDE.md](CLAUDE.md) — implementation rules and measured herdr protocol constraints
+- herdr docs: <https://herdr.dev/docs/>
