@@ -112,8 +112,3 @@ cp release/release.env.example release/release.env
 ```
 
 CI 運用が基本だが、緊急時やオフライン署名に使う。
-
-## iOS Companion
-
-iOS アプリ（`HerdWatchIOS`）は macOS リリースとは独立トラック。
-TestFlight / App Store 経由で配信する（App Store は sandbox 内で動作するため配信可能）。

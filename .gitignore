@@ -1,6 +1,5 @@
-# XcodeGen 生成物（正本は HerdWatch.yml / HerdWatchIOS.yml）
+# XcodeGen 生成物（正本は HerdWatch.yml）
 HerdWatch.xcodeproj/
-HerdWatchIOS.xcodeproj/
 # XcodeGen が info: から生成する Info.plist（正本は HerdWatch.yml）
 HerdWatch/Info.plist
 

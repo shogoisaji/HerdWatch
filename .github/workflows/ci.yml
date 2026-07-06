@@ -62,29 +62,3 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
-
-  ios-build:
-    name: iOS companion build
-    runs-on: macos-26
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Xcode version
-        run: /usr/bin/xcodebuild -version
-
-      - name: Install xcodegen
-        run: brew install xcodegen
-
-      - name: Regenerate iOS project
-        run: xcodegen generate -s HerdWatchIOS.yml
-
-      - name: Build iOS
-        run: |
-          xcodebuild build \
-            -project HerdWatchIOS.xcodeproj \
-            -scheme HerdWatchIOS \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-            CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO

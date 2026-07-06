@@ -6,7 +6,6 @@ options:
   bundleIdPrefix: com.isaji134
   deploymentTarget:
     macOS: "26.0"
-    iOS: "26.0"
   createIntermediateGroups: true
   minimumXcodeGenVersion: "2.38.0"
 
@@ -78,24 +77,6 @@ targets:
         BUNDLE_LOADER: "$(TEST_HOST)"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/HerdWatch.app/Contents/MacOS/HerdWatch"
 
-  HerdWatchIOS:
-    type: application
-    platform: iOS
-    sources:
-      - path: HerdWatchIOS
-        excludes:
-          - "Info.plist"
-    dependencies:
-      - package: HerdWatchShared
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.isaji134.HerdWatchIOS
-        GENERATE_INFOPLIST_FILE: "YES"
-        INFOPLIST_FILE: HerdWatchIOS/Info.plist
-        ENABLE_PREVIEWS: "YES"
-        SWIFT_EMIT_LOC_STRINGS: "YES"
-        TARGETED_DEVICE_FAMILY: "1"
-
 schemes:
   HerdWatch:
     build:
@@ -105,12 +86,5 @@ schemes:
     test:
       targets:
         - HerdWatchTests
-    run:
-      config: Debug
-
-  HerdWatchIOS:
-    build:
-      targets:
-        HerdWatchIOS: all
     run:
       config: Debug
